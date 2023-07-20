@@ -6,7 +6,7 @@
     <insert id="write" parameterType="com.smhrd.board.domain.Board">
        insert into board(title,content,writer,img) values(#{title}, #{content}, #{writer}, #{img})
     </insert>
-     <select id ="writelist" resultType = "com.smhrd.board.domain.Board">
+     <select id ="boardlist" resultType = "com.smhrd.board.domain.Board">
 	  select *from board;
 	  </select>
  </mapper>

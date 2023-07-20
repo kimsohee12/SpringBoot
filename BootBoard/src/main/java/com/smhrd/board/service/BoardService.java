@@ -17,7 +17,16 @@ public class BoardService {
    public int write(Board b) {
       return mapper.write(b);
    }
-   public List<Board> writelist(){
-	   return mapper.writelist();
+   public List<Board> boardlist(){
+	   return mapper.boardlist();
    }
+   
+   
+   public Board content(int idx) {
+	   return mapper.content(idx);
+   }
+   public void delete(int idx) {
+	   mapper.delete(idx);
+   }
+   
 }

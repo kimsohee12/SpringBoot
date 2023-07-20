@@ -29,9 +29,10 @@
             <c:forEach items ="${boards}" var = "board">
             	<tr>
             		<td>${board.idx}</td>
-            		<td>${board.title}</td>
+            		<td><a href ="board/content/${board.idx}">${board.title}</a></td>
             		<td>${board.writer}</td>
             		<td>${board.indate}</td>
+            		<td> <button class="btn btn-sm btn-success" onClick = "goDelete(${board.idx})">삭제</button></td>
             	</tr>
             </c:forEach>
             
@@ -50,5 +51,64 @@
     <div class="panel-footer">FullStack SW융합 실무부트캠프 (담임 : 강예진)</div>
   </div>
 </div>
+<script >
+//goDelete 함수
+	function goDelete(idx){
+		$.ajax({
+			url : "board/delete/"+idx,
+			type : "get",
+			success : loadList,
+			error : function(){
+				alert("실패")
+			}
+		})
+	}
+	//DB(board) 전체 정보 (data 만!) 가져오기
+	function loadList(){
+		$.ajax({
+			url : "board/ajax",
+			type : "get",
+			dataType : "json", // 서버에서 반환해주는 데이터 타입 json으로
+			success : updateTable,
+			error : function (){
+				alert("loadList 실패 ")
+				
+			}
+		})
+		
+	}	
+	function updateTable(data){
+		var result = "<table class='table table-bordered table-hover'>";
+		   result += "<thead>"
+		   result += "<tr>";
+		   result += "<th>번호</th>";
+		   result += "<th>제목</th>";
+		   result += "<th>작성자</th>";
+		   result += "<th>작성일</th>";
+		   result += "<th>삭제</th>";
+		   result += "</tr>";
+		   result += "</thead>"
+		   //반복문
+		   result += "<tbody>";
+		   $.each(data, (index,vo)=> { //Vo ->Board, index (0번 부터 시작))
+		      result += "<tr>";
+		      result += "<td>"+vo.idx+"</td>";
+		      result += "<td>"+vo.title+"</td>";
+		      result += "<td>"+vo.writer+"</td>";
+		      result += "<td>"+vo.indate+"</td>";
+		      result += "<td><button class='btn btn-sm btn-success' onClick = 'goDelete("+vo.idx+")'>삭제</button></td>"
+		      result += "</tr>";
+		   })
+		   result += "</tbody>";
+		   result += "<tr>";
+		   result += "<td colspan='6'>";
+		   result += "<button onclick=\"location.href='board/writeform'\" class='btn btn-primary btn-sm'>글작성</button>";
+		   result += "</td>";
+		   result += "</tr>";
+		   result += "</table>";
+		   $("#list").html(result)
+		
+	}
+</script>
 </body>
 </html>

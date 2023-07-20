@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.smhrd.board.converter.ImageConverter;
+import com.smhrd.board.converter.ImageToBase64;
 import com.smhrd.board.domain.Board;
 import com.smhrd.board.service.BoardService;
 
@@ -24,7 +27,7 @@ public class BoardController {
    
    @GetMapping("/board")
    public String boardList(Model model) {
-      List<Board> boards = service.writelist();
+      List<Board> boards = service.boardlist();
       model.addAttribute("boards", boards);
       return "boardlist";
    }
@@ -65,7 +68,31 @@ public class BoardController {
          return "redirect:/board/writeform";
       }
       
+           
    }
+   
+   @GetMapping("/board/content/{idx}")
+   public String content(@PathVariable("idx") int idx, Model model) {
+	   Board b = service.content(idx);
+	   File file = new File("c:\\updateImage\\"+b.getImg());
+	   
+	   ImageConverter<File,String> converter = new ImageToBase64();
+	
+	   try {
+		String fileStringValue = converter.convert(file);
+		System.out.println(fileStringValue);
+	} catch (IOException e) {
+		
+		e.printStackTrace();
+	}
+	   model.addAttribute("board", b);
+	   return "boardcontent";
+	   
+   }
+   
+   
+   
+   
    
    
    

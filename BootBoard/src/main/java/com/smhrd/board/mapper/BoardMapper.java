@@ -2,7 +2,9 @@ package com.smhrd.board.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.smhrd.board.domain.Board;
@@ -11,5 +13,10 @@ import com.smhrd.board.domain.Board;
 public interface BoardMapper {
    
    public int write(Board b); 
-   public List<Board> writelist();
+   public List<Board> boardlist();
+   @Select("select * from board where idx=#{idx}")
+   public Board content(int idx);
+   @Delete("delete from board where idx=#{idx}")
+   public void delete (int idx);
+   
 }
