@@ -22,8 +22,8 @@ public class MemberController {
 	public String join(HttpServletRequest request) throws JsonMappingException, JsonProcessingException {
 		String andMember = request.getParameter("AndMember");
 		
-		ObjectMapper om = new ObjectMapper();
-		AndMember am= om.readValue(andMember, AndMember.class);
+		ObjectMapper om = new ObjectMapper(); //jaxkson-databind 에서 제공
+		AndMember am = om.readValue(andMember, AndMember.class);
 		
 		AndMember result = service.join(am);
 		if(result!=null) {
@@ -32,6 +32,26 @@ public class MemberController {
 			return "Fail";
 		}
 	}
-	
+	@PostMapping("/login")
+	public String login(HttpServletRequest request) throws JsonMappingException, JsonProcessingException {
+		String andMember = request.getParameter("AndMember");
+		ObjectMapper om = new ObjectMapper();
+		AndMember am = om.readValue(andMember, AndMember.class);
+		
+		//Request 되면 Controller(요청,응답) 로 넘어옴 -> Service(요청과 응답사이의 로직 처리)
+		//Mybatis : -> mapper
+		//JPA	  : -> Repository (Interface)
+		AndMember result =  service.login(am);
+		
+		//AndMember 가 있는값을 입력했는지 없는값을 입력했는지 확인-> 로그인 성공/로그인 x.
+		System.out.println(result);
+		if(result!=null) {
+			return "Success";
+			
+		}else {
+			return "Fail";
+		}
+		
+	}
 	
 }
